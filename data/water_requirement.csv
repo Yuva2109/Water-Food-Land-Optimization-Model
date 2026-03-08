@@ -1,0 +1,23 @@
+crop,water_requirement_mm,water_requirement_m3_per_ha
+Wheat,500,5000
+"Rice, paddy",650,6500
+Maize (corn),600,6000
+Barley,450,4500
+Sorghum,500,5000
+Millet,450,4500
+Potatoes,600,6000
+Sweet potatoes,550,5500
+Cassava,550,5500
+Soybeans,550,5500
+"Groundnuts, with shell",550,5500
+Sunflower seed,600,6000
+Rapeseed,500,5000
+Cottonseed,900,9000
+Sugar cane,1800,18000
+Sugar beet,900,9000
+Tomatoes,600,6000
+"Onions, dry",500,5000
+Cabbages and other brassicas,450,4500
+"Peas, dry",400,4000
+"Beans, dry",450,4500
+Bananas,1200,12000
