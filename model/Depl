@@ -29,3 +29,65 @@ spec:
     - port: 9091
       targetPort: 9091
       nodePort: 30091
+
+
+
+pipeline {
+    agent any
+
+    environment {
+        IMAGE_NAME = "python-flask-app"
+        DOCKERHUB_USER = "YOUR_DOCKERHUB_USERNAME"
+        IMAGE_TAG = "${DOCKERHUB_USER}/python-flask-app:latest"
+    }
+
+    stages {
+
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/your-username/python-docker-jenkins.git'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build -t $IMAGE_NAME ."
+            }
+        }
+
+        stage('Tag Image') {
+            steps {
+                sh "docker tag $IMAGE_NAME $IMAGE_TAG"
+            }
+        }
+
+        stage('Push to DockerHub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    sh '''
+                    echo $PASS | docker login -u $USER --password-stdin
+                    docker push $IMAGE_TAG
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh '''
+                kubectl apply -f deployment.yaml
+                kubectl apply -f service.yaml
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Kubernetes Deployment Successful 🚀"
+        }
+        failure {
+            echo "Deployment Failed ❌"
+        }
+    }
+}
